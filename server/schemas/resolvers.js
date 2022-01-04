@@ -1,11 +1,20 @@
+///// send an error if auth fails
 const { AuthenticationError } = require("apollo-server-express");
+
+//// imports models
 const { User, Book } = require("../models");
+
+///sign token method brought in from auth.js
 const { signToken } = require("../utils/auth");
 
 const resolvers = {
   Query: {
-    me: async () => {
-      return await User.find({}).populate("books");
+    // By adding context to our query, we can retrieve the logged in user without specifically searching for them
+    me: async (parent, args, context) => {
+      if (context.user) {
+        return User.findOne({ _id: context.user._id });
+      }
+      throw new AuthenticationError("You need to be logged in!");
     },
   },
   Mutation: {

@@ -8,10 +8,11 @@ import {
   Card,
   CardColumns,
 } from "react-bootstrap";
-import { useMutation } from "@apollo/react-hooks";
+
+import { useMutation } from "@apollo/client";
 import { save_Book } from "../utils/mutations";
 import Auth from "../utils/auth";
-import { saveBook, searchGoogleBooks } from "../utils/API";
+import { searchGoogleBooks } from "../utils/API";
 import { saveBookIds, getSavedBookIds } from "../utils/localStorage";
 
 const SearchBooks = () => {
@@ -23,7 +24,7 @@ const SearchBooks = () => {
   // create state to hold saved bookId values
   const [savedBookIds, setSavedBookIds] = useState(getSavedBookIds());
 
-  const [saveBook] = useMutation(save_Book);
+  const [saveBook, { error }] = useMutation(save_Book);
 
   // set up useEffect hook to save `savedBookIds` list to localStorage on component unmount
   // learn more here: https://reactjs.org/docs/hooks-effect.html#effects-with-cleanup

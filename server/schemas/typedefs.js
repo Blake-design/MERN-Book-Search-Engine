@@ -1,23 +1,25 @@
+////// These define the query structure to the DB
+
 const { gql } = require("apollo-server-express");
 
 const typeDefs = gql`
   type Book {
     _id: ID
-    bookID: String
+    bookID: String!
     authors: [String]
-    description: String
+    description: String!
     image: String
     link: String
     title: String
   }
   type User {
     _id: ID
-    username: String
-    email: String
+    username: String!
+    email: String!
     bookCount: Int
     savedBooks: [Book]
   }
-  input savedBook {
+  input SavedBook {
     description: String
     title: String
     bookId: String
@@ -35,8 +37,8 @@ const typeDefs = gql`
   type Mutation {
     login(email: String!, password: String!): Auth
     addUser(username: String!, email: String!, password: String!): Auth
-    saveBook(input: savedBook!): User
-    removeBook(BookId: String!): User
+    saveBook(book: SavedBook!): User
+    removeBook(bookId: String!): User
   }
 `;
 
